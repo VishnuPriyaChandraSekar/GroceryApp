@@ -5,7 +5,19 @@
 				</a>
 				<ul class="list-group">
 				 <li ng-repeat="item in groceryItems | orderBy:'-date'" class="list-group-item text-center clearfix">
-				 	{{item.itemsName}}
+
+				 	<button type="button" class="btn btn-sm btn-success pull-left" ng-click="markCompleted(item)">
+				 		<span class="glyphicon" ng-class="item.completed ? 'glyphicon-check' : 'glyphicon-unchecked'"></span>
+				 	</button>
+
+				 	<span ng-class="{strike:item.completed}">{{item.itemsName}}</span>
+
+				 	<button type="button" class="btn btn-sm btn-danger pull-right" ng-click="removeItem(item)">
+				 		<span class="glyphicon glyphicon-trash"></span>
+				 	</button>
+				 	<a href="#!addItem/edit/{{item.id}}" class="btn btn-sm btn-default pull-right">
+				 		<span class="glyphicon glyphicon-pencil"></span>
+				 	</a>
 				 </li>
 				</ul>
 			</div>

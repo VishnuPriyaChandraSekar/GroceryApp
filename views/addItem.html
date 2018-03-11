@@ -2,15 +2,19 @@
 				<div class="jumbotron text-center">
 					<h1> Add Item Below</h1>
 				</div>
+				<div class="alert alert-danger" role="alert" ng-show="groceryForm.$dirty && !groceryForm.$valid">
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					Entry a valid grocery item.
+				</div>
 				<form name="groceryForm">
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Grocery Item" ng-model="itemToBeAdded.itemsName">
+						<input type="text" ng-pattern="/^[a-zA-Z]*$/" class="form-control" placeholder="Grocery Item" ng-model="itemToBeAdded.itemsName" required>
 					</div>
 					<div class="form-group">
-						<a href="#/" class="btn btn-success btn-lg btn-block" ng-click="save()">
+						<button type="button" class="btn btn-success btn-lg btn-block" ng-click="groceryForm.$valid && save()">
 							<span class="glyphicon glyphicon-pushpin"></span>
 							Save
-						</a>
+						</button>
 					</div>
 					<div class="form-group">
 						<a href="#/" class="btn btn-default btn-lg btn-block">
