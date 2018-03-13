@@ -23,17 +23,29 @@ app.config(function($routeProvider){
 	});
 });
 
-app.service("GroceryService", function(){
+app.service("GroceryService", function($http){
 
    var groceryService = {};
 
-   groceryService.groceryItems = [
-		{id: 1, itemsName: 'milk', completed: true, date: new Date("October 1, 2014 11:12:00")},
-		{id: 2, itemsName: 'cookies',completed: false,  date: new Date("October 3, 2014 11:12:00")},
-		{id: 3, itemsName: 'ice cream',completed: false,  date: new Date("November 1, 2014 11:12:00")},
-		{id: 4, itemsName: 'eggs', completed: true, date: new Date("December 1, 2014 11:12:00")}
-	];
+   groceryService.groceryItems = [];
 
+
+   $http({
+   	   method : 'GET',
+   	   url : 'http://localhost:8080/GroceryApp/data/server-data.json',
+   	   responseType : 'json'
+
+   }).then(function(response) {
+          //First function handles success
+          groceryService.groceryItems = response.data;
+          for(var item in groceryService.groceryItems)
+         		groceryService.groceryItems[item].date = new Date(groceryService.groceryItems[item].date);
+
+        }, function(response) {
+            //Second function handles error
+            console.log("Error : "+response.statusText);
+        });
+  
 
 	groceryService.findById = function(id){
 		for(var item in groceryService.groceryItems){
@@ -123,4 +135,15 @@ app.controller("HomeController", ["$scope", "GroceryService", function($scope, G
     $scope.markCompleted = function(item){
     	GroceryService.markCompleted(item);
     }
+
+    // 
+
+    /**
+    ** watch(variable to be watched, action to be invoked when the variable changes)
+    */
+    $scope.$watch(function(){ return GroceryService.groceryItems}, function(groceryItems){
+    	$scope.groceryItems = groceryItems;
+    })
+
+
 }]);
